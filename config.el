@@ -22,12 +22,15 @@
 `((".*" "~/.config/emacs/saves/" t)))
 (defun reload-config ()
 (interactive)
-(shell-command "quicktangle ~/.config/emacs/config.org ~/.config/emacs/config.el")
-(load-file "~/.config/emacs/config.el"))
+(load-file "~/.config/emacs/init.el"))
 (use-package doom-themes
 :straight t
 :config (load-theme 'doom-dracula t)
 )
+(use-package fira-code-mode
+:straight t
+:defer t
+:hook (prog-mode . fira-code-mode))
 (use-package telephone-line
 :straight t
 :hook (after-init . telephone-line-mode))
@@ -41,6 +44,7 @@
 (setq dashboard-startup-banner 'logo)
 (setq dashboard-set-heading-icons t)
 (setq dashboard-set-file-icons t)
+(setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 (dashboard-setup-startup-hook))
 (use-package aggressive-indent
 :straight t
@@ -57,6 +61,14 @@
 :straight t
 :config (yas-global-mode 1))
 (setq next-line-add-newlines t)
+(use-package emms
+:straight t
+:config
+(emms-all)
+(emms-default-players)
+(setq emms-source-file-default-directory "~/music/"))
+(add-hook 'eshell-mode-hook '(lambda ()
+(define-key eshell-mode-map (kbd "<tab>") 'completion-at-point)))
 (use-package vertico
 :straight t
 :config (vertico-mode 1))
@@ -68,6 +80,14 @@
 :straight t
 :init
 (marginalia-mode))
+(use-package diff-hl
+:straight t
+:hook (prog-mode . diff-hl-mode))
+(use-package which-key
+:straight t
+:config
+(setq which-key-idle-delay 0.5)
+(which-key-mode))
 (use-package org-noter
 :straight t)
 (use-package org-journal
@@ -95,13 +115,25 @@
 org-roam-ui-follow t
 org-roam-ui-update-on-save t
 org-roam-ui-open-on-start t))
+(use-package org-recur
+:demand t
+:straight t
+:hook ((org-mode . org-recur-mode)
+(org-agenda-mode . org-recur-agenda-mode))
+:config
+(define-key org-recur-mode-map (kbd "C-c d") 'org-recur-finish)
+(define-key org-recur-agenda-mode-map (kbd "d") 'org-recur-finish)
+(define-key org-recur-agenda-mode-map (kbd "C-c d") 'org-recur-finish)
+(setq org-recur-finish-done t
+org-recur-finish-archive t))
 (use-package org-superstar
 :straight t
 :hook (org-mode . org-superstar-mode))
 (setq org-adapt-indentation 't)
 (use-package company
 :straight t
-:hook (prog-mode . company-mode)
+:hook ((prog-mode . company-mode)
+(eshell-mode . company-mode))
 :config (setq company-idle-delay 0))
 (use-package go-mode
 :straight t
@@ -118,6 +150,11 @@ org-roam-ui-open-on-start t))
 (use-package rust-mode
 :straight t
 :mode "\\.rs\\'")
+(use-package clojure-mode
+:straight t
+:mode "\\.clj\\'")
+(use-package cider
+:straight t)
 (use-package lsp-mode
 :straight t
 :hook ((go-mode . lsp)

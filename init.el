@@ -17,13 +17,25 @@
  '(company-quickhelp-color-background "#4F4F4F")
  '(company-quickhelp-color-foreground "#DCDCCC")
  '(custom-safe-themes
-   '("0ab2aa38f12640ecde12e01c4221d24f034807929c1f859cbca444f7b0a98b3a" "583148e87f779040b5349db48b6fcad6fe9a873c6ada20487e9a1ec40d845505" "d14f3df28603e9517eb8fb7518b662d653b25b26e83bd8e129acea042b774298" default))
+   '("234dbb732ef054b109a9e5ee5b499632c63cc24f7c2383a849815dacc1727cb6" "0ab2aa38f12640ecde12e01c4221d24f034807929c1f859cbca444f7b0a98b3a" "583148e87f779040b5349db48b6fcad6fe9a873c6ada20487e9a1ec40d845505" "d14f3df28603e9517eb8fb7518b662d653b25b26e83bd8e129acea042b774298" default))
+ '(exwm-floating-border-color "#242530")
  '(fci-rule-color "#383838")
+ '(highlight-tail-colors
+   ((("#2c3e3c" "#2a3b2e" "green")
+     . 0)
+    (("#313d49" "#2f3a3b" "brightcyan")
+     . 20)))
  '(inhibit-startup-screen t)
+ '(jdee-db-active-breakpoint-face-colors (cons "#1E2029" "#bd93f9"))
+ '(jdee-db-requested-breakpoint-face-colors (cons "#1E2029" "#50fa7b"))
+ '(jdee-db-spec-breakpoint-face-colors (cons "#1E2029" "#565761"))
  '(nrepl-message-colors
    '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
+ '(objed-cursor-color "#ff5555")
  '(org-agenda-files '("~/org/inbox.org"))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
+ '(rustic-ansi-faces
+   ["#282a36" "#ff5555" "#50fa7b" "#f1fa8c" "#61bfff" "#ff79c6" "#8be9fd" "#f8f8f2"])
  '(vc-annotate-background "#2B2B2B")
  '(vc-annotate-color-map
    '((20 . "#BC8383")

@@ -43,10 +43,9 @@
    #+begin_src elisp
      (defun reload-config ()
        (interactive)
-       (shell-command "quicktangle ~/.config/emacs/config.org ~/.config/emacs/config.el")
-       (load-file "~/.config/emacs/config.el"))
+       (load-file "~/.config/emacs/init.el"))
    #+end_src
-   
+
 * Aesthetics
 ** Set Theme
    #+begin_src elisp
@@ -55,6 +54,14 @@
        :config (load-theme 'doom-dracula t)
        )
    #+end_src
+** Fira Ligatures
+   #+begin_src elisp
+     (use-package fira-code-mode
+       :straight t
+       :defer t
+       :hook (prog-mode . fira-code-mode))
+   #+end_src
+
 ** Telephone line
    #+begin_src elisp
      (use-package telephone-line
@@ -73,6 +80,7 @@
        (setq dashboard-startup-banner 'logo)
        (setq dashboard-set-heading-icons t)
        (setq dashboard-set-file-icons t)
+       (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
        (dashboard-setup-startup-hook))
    #+end_src
 
@@ -118,7 +126,23 @@ Relative line numbers
      (setq next-line-add-newlines t)
    #+end_src 
 * Functionality
-** Selectrum
+** EMMS
+   #+begin_src elisp
+     (use-package emms
+       :straight t
+       :config
+       (emms-all)
+       (emms-default-players)
+       (setq emms-source-file-default-directory "~/music/"))
+   #+end_src
+
+** Eshell
+   #+begin_src elisp
+     (add-hook 'eshell-mode-hook '(lambda ()
+				    (define-key eshell-mode-map (kbd "<tab>") 'completion-at-point)))
+   #+end_src
+
+** Vertico
    #+begin_src elisp
      (use-package vertico
        :straight t
@@ -138,6 +162,22 @@ Relative line numbers
        :init
        (marginalia-mode))
    #+end_src
+** Diff-HL
+   #+begin_src elisp
+     (use-package diff-hl
+       :straight t
+       :hook (prog-mode . diff-hl-mode))
+   #+end_src
+** Which-Key
+   #+begin_src elisp
+     (use-package which-key
+       :straight t
+       :config
+       (setq which-key-idle-delay 0.5)
+       (which-key-mode))
+   #+end_src
+
+
 * Org
 ** Noter
    #+begin_src elisp
@@ -178,6 +218,24 @@ Relative line numbers
 	     org-roam-ui-update-on-save t
 	     org-roam-ui-open-on-start t))
    #+end_src
+** Recur
+   #+begin_src elisp
+     (use-package org-recur
+       :demand t
+       :straight t
+       :hook ((org-mode . org-recur-mode)
+	      (org-agenda-mode . org-recur-agenda-mode))
+       :config
+       (define-key org-recur-mode-map (kbd "C-c d") 'org-recur-finish)
+     
+       (define-key org-recur-agenda-mode-map (kbd "d") 'org-recur-finish)
+       (define-key org-recur-agenda-mode-map (kbd "C-c d") 'org-recur-finish)
+     
+       (setq org-recur-finish-done t
+	     org-recur-finish-archive t))
+     
+   #+end_src
+
 ** Superstar
    #+begin_src elisp
      (use-package org-superstar
@@ -193,7 +251,8 @@ Relative line numbers
    #+begin_src elisp
      (use-package company
        :straight t
-       :hook (prog-mode . company-mode)
+       :hook ((prog-mode . company-mode)
+	      (eshell-mode . company-mode))
        :config (setq company-idle-delay 0))
    #+end_src
 ** Language Modes
@@ -228,6 +287,16 @@ Relative line numbers
 	:straight t
 	:mode "\\.rs\\'")
     #+end_src
+*** Clojure
+    #+begin_src elisp
+      (use-package clojure-mode
+	:straight t
+	:mode "\\.clj\\'")
+      
+      (use-package cider
+	:straight t)
+    #+end_src
+
 ** LSP
    #+begin_src elisp
      (use-package lsp-mode
@@ -237,3 +306,4 @@ Relative line numbers
 	      (nim-mode . lsp))
        :commands lsp)
    #+end_src
+

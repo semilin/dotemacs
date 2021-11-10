@@ -1,0 +1,39 @@
+ls
+ls
+go build
+./genkey
+./genkey sfbs
+./genkey sfbs iaesdrnt
+./genkey a mtgap
+./genkey iadesrnt daeisrnt daeisrtn daei
+cd code/genkey/
+ls
+cd
+rg
+ls
+cd code/genkey/
+ls
+ls
+./genkey r
+find-file weights.hjson 
+ls
+./genkey r
+find-file weights.hjson 
+ls
+clear [	ls]
+clear
+lss
+clear
+ls
+cd data/
+ls
+cd ..
+ls
+..
+genkey
+ls
+la
+layoutls
+dired layouts
+ls
+dired layouts
