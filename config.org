@@ -34,8 +34,7 @@
    #+end_src
 ** Auto Save Directory
    #+begin_src elisp
-     (setq auto-save-file-name-transforms
-	   `((".*" "~/.config/emacs/saves/" t)))
+     (setq backup-directory-alist '(("." . "~/.config/emacs/saves/")))
    #+end_src
 
 * Custom
@@ -49,9 +48,9 @@
 * Aesthetics
 ** Set Theme
    #+begin_src elisp
-     (use-package doom-themes
+     (use-package base16-theme
        :straight t
-       :config (load-theme 'doom-dracula t)
+       :config (load-theme 'base16-chalk t)
        )
    #+end_src
 ** Fira Ligatures
@@ -148,6 +147,12 @@ Relative line numbers
        :straight t
        :config (vertico-mode 1))
    #+end_src
+** Notmuch
+   #+begin_src elisp
+     (use-package notmuch
+       :straight t)
+   #+end_src
+
 ** Magit
    #+begin_src elisp
 	       (use-package magit
@@ -177,8 +182,22 @@ Relative line numbers
        (which-key-mode))
    #+end_src
 
-
 * Org
+** Agenda
+   #+begin_src elisp
+     (global-set-key (kbd "C-c a") 'org-agenda)
+   #+end_src
+** Capture Templates
+   #+begin_src elisp
+     (setq org-capture-templates
+      '(("t" "Todo" entry (file+headline "~/org/inbox.org" "Tasks")
+         "* TODO %?\nSCHEDULED: %t\n%i\n\n %a")))
+   #+end_src
+
+   #+begin_src elisp
+     (global-set-key (kbd "C-c c") 'org-capture)
+   #+end_src
+
 ** Noter
    #+begin_src elisp
      (use-package org-noter
@@ -242,6 +261,11 @@ Relative line numbers
        :straight t
        :hook (org-mode . org-superstar-mode))
    #+end_src
+** Small settings
+   #+begin_src elisp
+     ;(set-variable org-log-done 'time)
+   #+end_src
+
 ** Indentation
    #+begin_src elisp
      (setq org-adapt-indentation 't)

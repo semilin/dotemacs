@@ -18,14 +18,13 @@
 (getenv "PATH")
 )
 )
-(setq auto-save-file-name-transforms
-`((".*" "~/.config/emacs/saves/" t)))
+(setq backup-directory-alist '(("." . "~/.config/emacs/saves/")))
 (defun reload-config ()
 (interactive)
 (load-file "~/.config/emacs/init.el"))
-(use-package doom-themes
+(use-package base16-theme
 :straight t
-:config (load-theme 'doom-dracula t)
+:config (load-theme 'base16-chalk t)
 )
 (use-package fira-code-mode
 :straight t
@@ -72,6 +71,8 @@
 (use-package vertico
 :straight t
 :config (vertico-mode 1))
+(use-package notmuch
+:straight t)
 (use-package magit
 :straight t
 :defer t
@@ -88,6 +89,11 @@
 :config
 (setq which-key-idle-delay 0.5)
 (which-key-mode))
+(global-set-key (kbd "C-c a") 'org-agenda)
+(setq org-capture-templates
+'(("t" "Todo" entry (file+headline "~/org/inbox.org" "Tasks")
+"* TODO %?\nSCHEDULED: %t\n%i\n\n %a")))
+(global-set-key (kbd "C-c c") 'org-capture)
 (use-package org-noter
 :straight t)
 (use-package org-journal
