@@ -68,6 +68,13 @@
 (setq emms-source-file-default-directory "~/music/"))
 (add-hook 'eshell-mode-hook '(lambda ()
 (define-key eshell-mode-map (kbd "<tab>") 'completion-at-point)))
+(use-package elfeed
+:straight t)
+(use-package elfeed-org
+:straight t
+:config
+(elfeed-org)
+(setq rmh-elfeed-org-files (list "~/.config/emacs/elfeed.org")))
 (use-package vertico
 :straight t
 :config (vertico-mode 1))
@@ -111,7 +118,11 @@
 (org-roam-directory (file-truename "~/org/roam"))
 :config
 (org-roam-db-autosync-mode)
-(require 'org-roam-protocol))
+(require 'org-roam-protocol)
+:bind (("C-c r f" . org-roam-node-find)
+("C-c r i" . org-roam-node-insert)
+("C-c r u" . org-roam-ui-open)
+("C-c r b" . org-roam-buffer-toggle)))
 (use-package org-roam-ui
 :straight
 (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))

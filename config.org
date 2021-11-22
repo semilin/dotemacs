@@ -141,6 +141,17 @@ Relative line numbers
 				    (define-key eshell-mode-map (kbd "<tab>") 'completion-at-point)))
    #+end_src
 
+** elfeed
+   #+begin_src elisp
+     (use-package elfeed
+       :straight t)
+     (use-package elfeed-org
+       :straight t
+       :config
+       (elfeed-org)
+       (setq rmh-elfeed-org-files (list "~/.config/emacs/elfeed.org")))
+   #+end_src
+
 ** Vertico
    #+begin_src elisp
      (use-package vertico
@@ -214,16 +225,20 @@ Relative line numbers
    #+end_src 
 ** Roam
    #+begin_src elisp
-     (use-package org-roam
-       :ensure t
-       :straight t
-       :init
-       (setq org-roam-v2-ack t)
-       :custom
-       (org-roam-directory (file-truename "~/org/roam"))
-       :config
-       (org-roam-db-autosync-mode)
-       (require 'org-roam-protocol))
+	  (use-package org-roam
+	    :ensure t
+	    :straight t
+	    :init
+	    (setq org-roam-v2-ack t)
+	    :custom
+	    (org-roam-directory (file-truename "~/org/roam"))
+	    :config
+	    (org-roam-db-autosync-mode)
+	    (require 'org-roam-protocol)
+	    :bind (("C-c r f" . org-roam-node-find)
+		   ("C-c r i" . org-roam-node-insert)
+		   ("C-c r u" . org-roam-ui-open)
+		   ("C-c r b" . org-roam-buffer-toggle)))
    #+end_src 
 ** Roam-ui
    #+begin_src elisp

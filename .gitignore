@@ -10,3 +10,5 @@ auto-save-list/
 org-roam.db
 .lsp-session*
 emms/
+elfeed*
+url*
