@@ -52,6 +52,12 @@
 (show-paren-mode 1)
 (add-hook 'prog-mode-hook (lambda () (setq display-line-numbers 'relative)))
 (electric-pair-mode)
+(use-package paredit
+:straight t
+:hook (lisp-mode . paredit-mode))
+(use-package rainbow-delimiters
+:straight t
+:hook (lisp-mode . rainbow-delimiters-mode))
 (use-package move-text
 :straight t
 :bind (("M-p" . move-text-up)
@@ -78,6 +84,15 @@
 (use-package vertico
 :straight t
 :config (vertico-mode 1))
+(use-package orderless
+:straight t
+:init
+(setq completion-styles '(orderless)
+completion-category-defaults nil
+completion-category-overrides '((file (styles partial-completion)))))
+(use-package savehist
+:init
+(savehist-mode))
 (use-package notmuch
 :straight t)
 (use-package magit
@@ -99,7 +114,8 @@
 (global-set-key (kbd "C-c a") 'org-agenda)
 (setq org-capture-templates
 '(("t" "Todo" entry (file+headline "~/org/inbox.org" "Tasks")
-"* TODO %?\nSCHEDULED: %t\n%i\n\n %a")))
+"* TODO %?\nSCHEDULED: %t\n%i")
+("n" "Note" entry (file+headline "~/org/notes.org" "Notes"))))
 (global-set-key (kbd "C-c c") 'org-capture)
 (use-package org-noter
 :straight t)

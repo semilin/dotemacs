@@ -106,6 +106,20 @@ Relative line numbers
    #+begin_src elisp
      (electric-pair-mode)
    #+end_src
+** paredit
+   #+begin_src elisp
+     (use-package paredit
+       :straight t
+       :hook (lisp-mode . paredit-mode))
+   #+end_src
+** Rainbow Delimiters
+   #+begin_src elisp
+     (use-package rainbow-delimiters
+       :straight t
+       :hook (lisp-mode . rainbow-delimiters-mode))
+   #+end_src
+
+
 ** Move Text
    #+begin_src elisp
      (use-package move-text
@@ -157,6 +171,17 @@ Relative line numbers
      (use-package vertico
        :straight t
        :config (vertico-mode 1))
+
+     (use-package orderless
+       :straight t
+       :init
+       (setq completion-styles '(orderless)
+	     completion-category-defaults nil
+	     completion-category-overrides '((file (styles partial-completion)))))
+
+     (use-package savehist
+       :init
+       (savehist-mode))
    #+end_src
 ** Notmuch
    #+begin_src elisp
@@ -200,9 +225,10 @@ Relative line numbers
    #+end_src
 ** Capture Templates
    #+begin_src elisp
-     (setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/org/inbox.org" "Tasks")
-         "* TODO %?\nSCHEDULED: %t\n%i\n\n %a")))
+	  (setq org-capture-templates
+	   '(("t" "Todo" entry (file+headline "~/org/inbox.org" "Tasks")
+	      "* TODO %?\nSCHEDULED: %t\n%i")
+	     ("n" "Note" entry (file+headline "~/org/notes.org" "Notes"))))
    #+end_src
 
    #+begin_src elisp
