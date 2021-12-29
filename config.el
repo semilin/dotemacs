@@ -188,6 +188,17 @@ org-recur-finish-archive t))
 :mode "\\.clj\\'")
 (use-package cider
 :straight t)
+(use-package slime
+:straight t
+:init
+(setq inferior-lisp-program "/bin/sbcl"))
+(use-package slime-company
+:straight t
+:after (slime company)
+:config
+(setq slime-company-completion 'fuzzy
+slime-company-after-completion 'slime-company-just-one-space)
+(slime-setup '(slime-fancy slime-company)))
 (use-package lsp-mode
 :straight t
 :hook ((go-mode . lsp)
