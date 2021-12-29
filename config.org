@@ -362,24 +362,13 @@ Relative line numbers
 	:straight t)
     #+end_src
 *** Common Lisp
-**** SLIME
+**** Sly
      #+begin_src elisp
-       (use-package slime
+       (use-package sly
 	 :straight t
 	 :init
 	 (setq inferior-lisp-program "/bin/sbcl"))
      #+end_src
-**** slime-company
-     #+begin_src elisp
-       (use-package slime-company
-	 :straight t
-	 :after (slime company)
-	 :config
-	 (setq slime-company-completion 'fuzzy
-	       slime-company-after-completion 'slime-company-just-one-space)
-	 (slime-setup '(slime-fancy slime-company)))
-     #+end_src
-
 
 ** LSP
    #+begin_src elisp
