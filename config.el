@@ -22,9 +22,9 @@
 (defun reload-config ()
 (interactive)
 (load-file "~/.config/emacs/init.el"))
-(use-package base16-theme
+(use-package dracula-theme
 :straight t
-:config (load-theme 'base16-chalk t)
+:config (load-theme 'dracula t)
 )
 (use-package fira-code-mode
 :straight t
@@ -58,6 +58,36 @@
 (use-package rainbow-delimiters
 :straight t
 :hook (lisp-mode . rainbow-delimiters-mode))
+(use-package god-mode
+:straight t
+:config
+(god-mode)
+(global-set-key (kbd "C-x C-1") #'delete-other-windows)
+(global-set-key (kbd "C-x C-2") #'split-window-below)
+(global-set-key (kbd "C-x C-3") #'split-window-right)
+(global-set-key (kbd "C-x C-0") #'delete-window)
+(global-set-key (kbd "C-x C-o") #'other-window)
+(defun my-god-mode-update-mode-line ()
+(cond
+(god-local-mode
+(set-face-attribute 'mode-line nil
+:foreground "#604000"
+:background "#fff29a")
+(set-face-attribute 'mode-line-inactive nil
+:foreground "#3f3000"
+:background "#fff3da"))
+(t
+(set-face-attribute 'mode-line nil
+:foreground "#0a0a0a"
+:background "#d7d7d7")
+(set-face-attribute 'mode-line-inactive nil
+:foreground "#404148"
+:background "#efefef"))))
+(defun my-god-mode-update-cursor-type ()
+(setq cursor-type (if (or god-local-mode buffer-read-only) 'box 'bar)))
+(add-hook 'post-command-hook #'my-god-mode-update-cursor-type)
+(add-hook 'post-command-hook 'my-god-mode-update-mode-line)
+:bind (("<escape>" . god-local-mode)))
 (use-package move-text
 :straight t
 :bind (("M-p" . move-text-up)
@@ -115,7 +145,10 @@ completion-category-overrides '((file (styles partial-completion)))))
 (setq org-capture-templates
 '(("t" "Todo" entry (file+headline "~/org/inbox.org" "Tasks")
 "* TODO %?\nSCHEDULED: %t\n%i")
-("n" "Note" entry (file+headline "~/org/notes.org" "Notes"))))
+("n" "Note" entry (file+datetree "~/org/notes.org")
+"* %?" :prepend t)
+("j" "Journal" entry (file+datetree "~/org/journal.org")
+"* %?" :prepend t)))
 (global-set-key (kbd "C-c c") 'org-capture)
 (use-package org-noter
 :straight t)
@@ -159,9 +192,23 @@ org-roam-ui-open-on-start t))
 (define-key org-recur-agenda-mode-map (kbd "C-c d") 'org-recur-finish)
 (setq org-recur-finish-done t
 org-recur-finish-archive t))
+(use-package org-present
+:straight t
+:hook
+((org-present-mode . (lambda ()
+(org-present-big)
+(org-display-inline-images)
+(org-present-hide-cursor)
+(org-present-read-only)))
+(org-present-mode-quit . (lambda ()
+(org-present-small)
+(org-remove-inline-images)
+(org-present-show-cursor)
+(org-present-read-write)))))
 (use-package org-superstar
 :straight t
 :hook (org-mode . org-superstar-mode))
+(add-hook 'org-mode-hook 'auto-fill-mode)
 (setq org-adapt-indentation 't)
 (use-package company
 :straight t

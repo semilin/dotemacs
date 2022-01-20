@@ -17,8 +17,7 @@
  ("D" left-word)
  ("A" right-word)
  ("U" backward-sentence)
- ("E" forward-sentence)
- )
+ ("E" forward-sentence))
 
 (ryo-modal-keys
  ("k" kill-line)
