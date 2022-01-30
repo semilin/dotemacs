@@ -290,20 +290,20 @@ Relative line numbers
    #+end_src 
 ** Roam
    #+begin_src elisp
-	  (use-package org-roam
-	    :ensure t
-	    :straight t
-	    :init
-	    (setq org-roam-v2-ack t)
-	    :custom
-	    (org-roam-directory (file-truename "~/org/roam"))
-	    :config
-	    (org-roam-db-autosync-mode)
-	    (require 'org-roam-protocol)
-	    :bind (("C-c r f" . org-roam-node-find)
-		   ("C-c r i" . org-roam-node-insert)
-		   ("C-c r u" . org-roam-ui-open)
-		   ("C-c r b" . org-roam-buffer-toggle)))
+     (use-package org-roam
+       :ensure t
+       :straight t
+       :init
+       (setq org-roam-v2-ack t)
+       :custom
+       (org-roam-directory (file-truename "~/org/roam"))
+       :config
+       (org-roam-db-autosync-mode)
+       (require 'org-roam-protocol)
+       :bind (("C-c r f" . org-roam-node-find)
+	      ("C-c r i" . org-roam-node-insert)
+	      ("C-c r u" . org-roam-ui-open)
+	      ("C-c r b" . org-roam-buffer-toggle)))
    #+end_src 
 ** Roam-ui
    #+begin_src elisp
@@ -377,43 +377,13 @@ Relative line numbers
        :config (setq company-idle-delay 0))
    #+end_src
 ** Language Modes
-*** Go
-    #+begin_src elisp
-      (use-package go-mode
-	:straight t
-	:mode "\\.go\\'")
-    #+end_src
-*** Haskell
-    #+begin_src elisp
-      (use-package haskell-mode
-	:straight t
-	:mode "\\.hs\\'")
-    #+end_src
-*** Nim
-    #+begin_src elisp
-      (use-package nim-mode
-	:straight t
-	:mode "\\.nim\\'")
-    #+end_src
-    
-*** Python
-    #+begin_src elisp
-      (use-package python
-	:straight t
-	:mode ("\\.py\\'" . python-mode))
-    #+end_src
-*** Rust
-    #+begin_src elisp
-      (use-package rust-mode
-	:straight t
-	:mode "\\.rs\\'")
-    #+end_src
 *** Clojure
     #+begin_src elisp
       (use-package clojure-mode
 	:straight t
+	:defer t
 	:mode "\\.clj\\'")
-      
+
       (use-package cider
 	:straight t)
     #+end_src
@@ -425,6 +395,60 @@ Relative line numbers
 	 :init
 	 (setq inferior-lisp-program "/bin/sbcl"))
      #+end_src
+
+*** Go
+    #+begin_src elisp
+      (use-package go-mode
+	:straight t
+	:defer t
+	:mode "\\.go\\'")
+    #+end_src
+*** Haskell
+    #+begin_src elisp
+      (use-package haskell-mode
+	:straight t
+	:defer t
+	:mode "\\.hs\\'")
+    #+end_src
+*** Julia
+    #+begin_src elisp
+      (use-package julia-mode
+	:straight t
+	:defer t
+	:mode "\\.jl\\'")
+    #+end_src
+
+*** Nim
+    #+begin_src elisp
+      (use-package nim-mode
+	:straight t
+	:defer t
+	:mode "\\.nim\\'")
+    #+end_src
+    
+*** Python
+    #+begin_src elisp
+      (use-package python
+	:straight t
+	:defer t
+	:mode ("\\.py\\'" . python-mode))
+    #+end_src
+
+*** Rust
+    #+begin_src elisp
+      (use-package rust-mode
+	:straight t
+	:defer t
+	:mode "\\.rs\\'")
+    #+end_src
+
+*** Zig
+    #+begin_src elisp
+      (use-package zig-mode
+	:straight t
+	:defer t
+	:mode "\\.zig\\'")
+    #+end_src 
 
 ** LSP
    #+begin_src elisp

@@ -215,23 +215,9 @@ org-recur-finish-archive t))
 :hook ((prog-mode . company-mode)
 (eshell-mode . company-mode))
 :config (setq company-idle-delay 0))
-(use-package go-mode
-:straight t
-:mode "\\.go\\'")
-(use-package haskell-mode
-:straight t
-:mode "\\.hs\\'")
-(use-package nim-mode
-:straight t
-:mode "\\.nim\\'")
-(use-package python
-:straight t
-:mode ("\\.py\\'" . python-mode))
-(use-package rust-mode
-:straight t
-:mode "\\.rs\\'")
 (use-package clojure-mode
 :straight t
+:defer t
 :mode "\\.clj\\'")
 (use-package cider
 :straight t)
@@ -239,6 +225,34 @@ org-recur-finish-archive t))
 :straight t
 :init
 (setq inferior-lisp-program "/bin/sbcl"))
+(use-package go-mode
+:straight t
+:defer t
+:mode "\\.go\\'")
+(use-package haskell-mode
+:straight t
+:defer t
+:mode "\\.hs\\'")
+(use-package julia-mode
+:straight t
+:defer t
+:mode "\\.jl\\'")
+(use-package nim-mode
+:straight t
+:defer t
+:mode "\\.nim\\'")
+(use-package python
+:straight t
+:defer t
+:mode ("\\.py\\'" . python-mode))
+(use-package rust-mode
+:straight t
+:defer t
+:mode "\\.rs\\'")
+(use-package zig-mode
+:straight t
+:defer t
+:mode "\\.zig\\'")
 (use-package lsp-mode
 :straight t
 :hook ((go-mode . lsp)
