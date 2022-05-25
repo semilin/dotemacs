@@ -1,0 +1,3 @@
+[submodule "quicktangle"]
+	path = quicktangle
+	url = https://github.com/semilin/quicktangle

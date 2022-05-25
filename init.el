@@ -2,8 +2,8 @@
 (menu-bar-mode 0)
 (scroll-bar-mode 0)
 
-(set-face-attribute 'default t :font "FiraCode")
-(set-face-attribute 'default nil :height 140)
+;;(set-face-attribute 'default t :font "FiraCode")
+(set-face-attribute 'default nil :height 200)
 
 (setq gc-cons-threshold (* 1024 1024 100))
 
@@ -32,7 +32,11 @@
  '(nrepl-message-colors
    '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
  '(objed-cursor-color "#ff5555")
- '(org-agenda-files '("~/org/inbox.org"))
+ '(org-agenda-files
+   '("/home/semi/org/essential/inbox.org" "/home/semi/org/essential/events.org"))
+ '(org-format-latex-options
+   '(:foreground default :background default :scale 4.0 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
+		 ("begin" "$1" "$" "$$" "\\(" "\\[")))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(rustic-ansi-faces
    ["#282a36" "#ff5555" "#50fa7b" "#f1fa8c" "#61bfff" "#ff79c6" "#8be9fd" "#f8f8f2"])
@@ -56,7 +60,8 @@
      (320 . "#8CD0D3")
      (340 . "#94BFF3")
      (360 . "#DC8CC3")))
- '(vc-annotate-very-old-color "#DC8CC3"))
+ '(vc-annotate-very-old-color "#DC8CC3")
+ '(warning-suppress-types '(((fira-code-ligatures)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
