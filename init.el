@@ -33,7 +33,7 @@
    '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
  '(objed-cursor-color "#ff5555")
  '(org-agenda-files
-   '("/home/semi/org/essential/inbox.org" "/home/semi/org/essential/events.org"))
+   '("~/org/capture/personal_projects.org" "/home/semi/org/capture/inbox.org" "/home/semi/org/capture/school.org" "/home/semi/org/essential/inbox.org" "/home/semi/org/essential/events.org"))
  '(org-format-latex-options
    '(:foreground default :background default :scale 4.0 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
 		 ("begin" "$1" "$" "$$" "\\(" "\\[")))
@@ -61,7 +61,7 @@
      (340 . "#94BFF3")
      (360 . "#DC8CC3")))
  '(vc-annotate-very-old-color "#DC8CC3")
- '(warning-suppress-types '(((fira-code-ligatures)))))
+ '(warning-suppress-types '((comp) (comp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

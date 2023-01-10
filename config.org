@@ -1,5 +1,5 @@
 #+TITLE:Emacs Config
-* Basic Package Management
+* Package Management
 ** Straight
    #+begin_src elisp
      (defvar bootstrap-version)
@@ -137,29 +137,10 @@ Relative line numbers
        (global-set-key (kbd "C-x C-0") #'delete-window)
        (global-set-key (kbd "C-x C-o") #'other-window)
 
-       (defun my-god-mode-update-mode-line ()
-	 (cond
-	  (god-local-mode
-	   (set-face-attribute 'mode-line nil
-			       :foreground "#604000"
-			       :background "#fff29a")
-	   (set-face-attribute 'mode-line-inactive nil
-			       :foreground "#3f3000"
-			       :background "#fff3da"))
-	  (t
-	   (set-face-attribute 'mode-line nil
-			       :foreground "#0a0a0a"
-			       :background "#d7d7d7")
-	   (set-face-attribute 'mode-line-inactive nil
-			       :foreground "#404148"
-			       :background "#efefef"))))
-
-
        (defun my-god-mode-update-cursor-type ()
 	 (setq cursor-type (if (or god-local-mode buffer-read-only) 'box 'bar)))
 
        (add-hook 'post-command-hook #'my-god-mode-update-cursor-type)
-       (add-hook 'post-command-hook 'my-god-mode-update-mode-line)
        :bind (("<escape>" . god-local-mode)))
    #+end_src
 
@@ -201,6 +182,21 @@ Relative line numbers
    #+end_src 
 
 * Functionality
+** Circe
+   #+begin_src elisp
+     (use-package circe
+       :straight t
+       :config
+       (setq circe-network-options
+	     '(("Libera Chat"
+		:tls t
+		:nick "semi"
+		:sasl-username "semi"
+		:sasl-password "4L6&hU+DHgD|M3)(QGL7\\pbE\\>:@;(GD"
+		:channels ("#emacs"
+			   "#commonlisp")))))
+   #+end_src
+
 ** Counsel
    #+begin_src elisp
      (use-package consult
@@ -303,13 +299,11 @@ Relative line numbers
    #+end_src
 ** Capture Templates
    #+begin_src elisp
-      (setq org-capture-templates
-       '(("t" "Todo" entry (file+headline "~/org/essential/inbox.org" "Tasks")
-	  "* TODO %?\nSCHEDULED: %t\n%i")
-	 ("n" "Note" entry (file+datetree "~/org/essential/notes.org")
-	  "* %?" :prepend t)
-	 ("j" "Journal" entry (file+datetree "~/org/journal.org")
-	  "* %?" :prepend t)))
+	  (setq org-capture-templates
+	   '(("t" "Inbox" entry (file+headline "~/org/capture/inbox.org" "Inbox")
+	      "* TODO %?\nSCHEDULED: %t\n%i")
+	     ("s" "Schedule" entry (file+headline "~/org/capture/inbox.org" "Inbox")
+	      ("* %?\nSCHEDULED: %t\n%i"))))
    #+end_src
 
    #+begin_src elisp
@@ -330,54 +324,41 @@ Relative line numbers
        :config
        (setq org-journal-dir "~/org/journal"))
    #+end_src 
+** Refile
+   #+begin_src elisp
+     (setq org-refile-targets (quote (("school.org" :maxlevel . 2)
+				      ("personal_projects.org" :maxlevel . 2)
+				      ("someday.org" :maxlevel . 2))))
+   #+end_src
+
 ** Roam
    #+begin_src elisp
-     (use-package org-roam
-       :ensure t
-       :straight t
-       :init
-       (setq org-roam-v2-ack t)
-       :custom
-       (org-roam-directory (file-truename "~/org/roam"))
-       :config
-       (setq org-roam-capture-templates
-	     '(("m" "main" plain
-		"%?"
-		:if-new (file+head "main/${slug}.org"
-				   "#+title: ${title}\n")
-		:immediate-finish t
-		:unnarrowed t)
-	       ("r" "reference" plain
-		"%?"
-		:if-new (file+head "reference/${title}.org"
-				   "#+title: ${title}\n")
-		:immediate-finish t
-		:unnarrowed t)
-	       ("a" "articles" plain
-		"%?"
-		:if-new (file+head "articles/${title}.org"
-				   "#+title: ${title}\n#+filetags: :article:\n")
-		:immediate-finish t
-		:unnarrowed t)))
+	  (use-package org-roam
+	    :ensure t
+	    :straight t
+	    :init
+	    (setq org-roam-v2-ack t)
+	    :custom
+	    (org-roam-directory (file-truename "~/org/roam"))
+	    :config
+	    (setq org-roam-capture-templates
+		  '(("m" "main" plain
+		     "%?"
+		     :if-new (file+head "main/${slug}.org"
+					"#+title: ${title}\n")
+		     :immediate-finish t
+		     :unnarrowed t)))
 
-       (cl-defmethod org-roam-node-type ((node org-roam-node))
-	 "Return the TYPE of NODE."
-	 (condition-case nil
-	     (file-name-nondirectory
-	      (directory-file-name
-	       (file-name-directory
-		(file-relative-name (org-roam-node-file node) org-roam-directory))))
-	   (error "")))
-
-       (setq org-roam-node-display-template
-	     (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-       (org-roam-db-autosync-mode)
-       (require 'org-roam-protocol)
-       :bind (("C-c r f" . org-roam-node-find)
-	      ("C-c r i" . org-roam-node-insert)
-	      ("C-c r c" . org-roam-capture)
-	      ("C-c r u" . org-roam-ui-open)
-	      ("C-c r b" . org-roam-buffer-toggle)))
+	    (org-roam-db-autosync-mode)
+	    (require 'org-roam-protocol)
+	    :bind (("C-c r f" . org-roam-node-find)
+		   ("C-c r i" . org-roam-node-insert)
+		   ("C-c r c" . org-roam-capture)
+		   ("C-c r u" . org-roam-ui-open)
+		   ("C-c r b" . org-roam-buffer-toggle)
+		   ("C-c r d c" . org-roam-dailies-capture-today)
+		   ("C-c r d t" . org-roam-dailies-goto-today)
+		   ("C-c r d d" . org-roam-dailies-goto-date)))
    #+end_src 
 
    #+RESULTS:
@@ -428,6 +409,18 @@ Relative line numbers
 			      (org-present-show-cursor)
 			      (org-present-read-write)))))
    #+end_src
+** Super Agenda
+   #+begin_src elisp
+     (use-package org-super-agenda
+       :straight t
+       :config
+       (org-super-agenda-mode)
+       (setq org-super-agenda-groups
+		     '((:auto-group t))))
+   #+end_src
+
+   #+RESULTS:
+   : t
 
 ** Superstar
    #+begin_src elisp
@@ -497,6 +490,14 @@ Relative line numbers
 	:defer t
 	:mode "\\.hs\\'")
     #+end_src
+*** Janet
+    #+begin_src elisp
+      (use-package janet-mode
+	:straight t
+	:defer t
+	:mode "\\.janet\\'")
+    #+end_src
+
 *** Julia
     #+begin_src elisp
       (use-package julia-mode
@@ -512,7 +513,32 @@ Relative line numbers
 	:defer t
 	:mode "\\.nim\\'")
     #+end_src
-    
+
+*** Odin
+    #+begin_src elisp
+      (define-generic-mode
+	  'odin-mode
+	'("//") ; comment
+	'("package" "import" "proc")
+	'(("=" . 'font-lock-operator))
+	'(".odin\\'")
+	nil)
+
+      (defun odin-compile ()
+	(interactive)
+	(shell-command "/home/semi/dl/build/Odin/odin build ."))
+
+      (defun odin-run ()
+	(interactive)
+	(shell-command "/home/semi/dl/build/Odin/odin run ."))
+
+
+      (defvar odin-mode-map (make-keymap))
+
+      (define-key odin-mode-map (kbd "C-c C-c") 'odin-compile)
+      (define-key odin-mode-map (kbd "C-c C-r") 'odin-run)
+    #+end_src
+
 *** Python
     #+begin_src elisp
       (use-package python
@@ -555,7 +581,6 @@ Relative line numbers
 
 ** eglot
    #+begin_src elisp
-     :eval no
      (use-package eglot
        :ensure
        :straight t)

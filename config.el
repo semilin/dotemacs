@@ -70,26 +70,9 @@
 (global-set-key (kbd "C-x C-3") #'split-window-right)
 (global-set-key (kbd "C-x C-0") #'delete-window)
 (global-set-key (kbd "C-x C-o") #'other-window)
-(defun my-god-mode-update-mode-line ()
-(cond
-(god-local-mode
-(set-face-attribute 'mode-line nil
-:foreground "#604000"
-:background "#fff29a")
-(set-face-attribute 'mode-line-inactive nil
-:foreground "#3f3000"
-:background "#fff3da"))
-(t
-(set-face-attribute 'mode-line nil
-:foreground "#0a0a0a"
-:background "#d7d7d7")
-(set-face-attribute 'mode-line-inactive nil
-:foreground "#404148"
-:background "#efefef"))))
 (defun my-god-mode-update-cursor-type ()
 (setq cursor-type (if (or god-local-mode buffer-read-only) 'box 'bar)))
 (add-hook 'post-command-hook #'my-god-mode-update-cursor-type)
-(add-hook 'post-command-hook 'my-god-mode-update-mode-line)
 :bind (("<escape>" . god-local-mode)))
 (use-package move-text
 :straight t
@@ -112,6 +95,17 @@
 (popup-tip msg))))
 (setq langtool-autoshow-message-function
 'langtool-autoshow-detail-popup))
+(use-package circe
+:straight t
+:config
+(setq circe-network-options
+'(("Libera Chat"
+:tls t
+:nick "semi"
+:sasl-username "semi"
+:sasl-password "4L6&hU+DHgD|M3)(QGL7\\pbE\\>:@;(GD"
+:channels ("#emacs"
+"#commonlisp")))))
 (use-package consult
 :straight t
 :bind (("C-x b" . consult-buffer)
@@ -169,12 +163,10 @@ completion-category-overrides '((file (styles partial-completion)))))
 :straight t)
 (global-set-key (kbd "C-c a") 'org-agenda)
 (setq org-capture-templates
-'(("t" "Todo" entry (file+headline "~/org/essential/inbox.org" "Tasks")
+'(("t" "Inbox" entry (file+headline "~/org/capture/inbox.org" "Inbox")
 "* TODO %?\nSCHEDULED: %t\n%i")
-("n" "Note" entry (file+datetree "~/org/essential/notes.org")
-"* %?" :prepend t)
-("j" "Journal" entry (file+datetree "~/org/journal.org")
-"* %?" :prepend t)))
+("s" "Schedule" entry (file+headline "~/org/capture/inbox.org" "Inbox")
+("* %?\nSCHEDULED: %t\n%i"))))
 (global-set-key (kbd "C-c c") 'org-capture)
 (use-package org-noter
 :straight t)
@@ -184,6 +176,9 @@ completion-category-overrides '((file (styles partial-completion)))))
 :defer t
 :config
 (setq org-journal-dir "~/org/journal"))
+(setq org-refile-targets (quote (("school.org" :maxlevel . 2)
+("personal_projects.org" :maxlevel . 2)
+("someday.org" :maxlevel . 2))))
 (use-package org-roam
 :ensure t
 :straight t
@@ -198,36 +193,17 @@ completion-category-overrides '((file (styles partial-completion)))))
 :if-new (file+head "main/${slug}.org"
 "#+title: ${title}\n")
 :immediate-finish t
-:unnarrowed t)
-("r" "reference" plain
-"%?"
-:if-new (file+head "reference/${title}.org"
-"#+title: ${title}\n")
-:immediate-finish t
-:unnarrowed t)
-("a" "articles" plain
-"%?"
-:if-new (file+head "articles/${title}.org"
-"#+title: ${title}\n#+filetags: :article:\n")
-:immediate-finish t
 :unnarrowed t)))
-(cl-defmethod org-roam-node-type ((node org-roam-node))
-"Return the TYPE of NODE."
-(condition-case nil
-(file-name-nondirectory
-(directory-file-name
-(file-name-directory
-(file-relative-name (org-roam-node-file node) org-roam-directory))))
-(error "")))
-(setq org-roam-node-display-template
-(concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
 (org-roam-db-autosync-mode)
 (require 'org-roam-protocol)
 :bind (("C-c r f" . org-roam-node-find)
 ("C-c r i" . org-roam-node-insert)
 ("C-c r c" . org-roam-capture)
 ("C-c r u" . org-roam-ui-open)
-("C-c r b" . org-roam-buffer-toggle)))
+("C-c r b" . org-roam-buffer-toggle)
+("C-c r d c" . org-roam-dailies-capture-today)
+("C-c r d t" . org-roam-dailies-goto-today)
+("C-c r d d" . org-roam-dailies-goto-date)))
 (use-package org-roam-ui
 :straight
 (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
@@ -261,6 +237,12 @@ org-recur-finish-archive t))
 (org-remove-inline-images)
 (org-present-show-cursor)
 (org-present-read-write)))))
+(use-package org-super-agenda
+:straight t
+:config
+(org-super-agenda-mode)
+(setq org-super-agenda-groups
+'((:auto-group t))))
 (use-package org-superstar
 :straight t
 :hook (org-mode . org-superstar-mode))
@@ -294,6 +276,10 @@ org-recur-finish-archive t))
 :straight t
 :defer t
 :mode "\\.hs\\'")
+(use-package janet-mode
+:straight t
+:defer t
+:mode "\\.janet\\'")
 (use-package julia-mode
 :straight t
 :defer t
@@ -302,6 +288,22 @@ org-recur-finish-archive t))
 :straight t
 :defer t
 :mode "\\.nim\\'")
+(define-generic-mode
+'odin-mode
+'("//") ; comment
+'("package" "import" "proc")
+'(("=" . 'font-lock-operator))
+'(".odin\\'")
+nil)
+(defun odin-compile ()
+(interactive)
+(shell-command "/home/semi/dl/build/Odin/odin build ."))
+(defun odin-run ()
+(interactive)
+(shell-command "/home/semi/dl/build/Odin/odin run ."))
+(defvar odin-mode-map (make-keymap))
+(define-key odin-mode-map (kbd "C-c C-c") 'odin-compile)
+(define-key odin-mode-map (kbd "C-c C-r") 'odin-run)
 (use-package python
 :straight t
 :defer t
@@ -316,3 +318,6 @@ org-recur-finish-archive t))
 :straight t
 :defer t
 :mode "\\.zig\\'")
+(use-package eglot
+:ensure
+:straight t)
